@@ -1,4 +1,5 @@
 <template>
+
     <div class="col-3 mt-3">
         <div class="card h-100 text-left">
             <img class="w-100" :src="product.image" alt />
@@ -10,7 +11,7 @@
                 <p class="card-text"> {{ product.description }} </p>
             </div>
             <div class="px-4 pb-3">
-                <button class="btn btn-secondary" @click="">Add to Cart</button>
+                <button class="btn btn-secondary" @click="addProductToCart">Add to Cart</button>
             </div>
         </div>
     </div>
@@ -18,11 +19,19 @@
 
 <script>
 
-
+import Header from "./Header";
 export default {
     props: ["product"],
+    components: {
+    Header
+    },
     methods: {
-
+        addProductToCart() {
+            this.$store.dispatch('cart/addProductCart', {
+                product: this.product,
+                quantity: 1
+            })
+        }
     }
 
 };

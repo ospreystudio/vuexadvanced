@@ -4,11 +4,11 @@
         style="min-width:320px; right:0; left:auto"
         aria-labelledby="triggerId"
     >
-        <div>
+        <div v-for="item in carts" :key="item.product.id">
             <div class="px-2 d-flex justify-content-between">
                 <div>
-                    <strong></strong>
-                    <br />
+                    <strong>{{ item.product.title }}</strong>
+                    <br /> {{ item.quantity }} X  {{ item.product.price }}
 
                 </div>
                 <div>
@@ -29,13 +29,15 @@
     </div>
 </template>
 
-<script>
-
-</script>
 
 <script>
 export default {
-    name: "MiniCart.vue"
+    name: "MiniCart.vue",
+    computed: {
+        carts() {
+            return this.$store.state.cart.cart
+        }
+    }
 }
 </script>
 

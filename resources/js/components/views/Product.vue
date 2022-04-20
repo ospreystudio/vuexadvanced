@@ -1,4 +1,5 @@
 <template>
+    <Header />
     <div class="row mt-5" v-if="product" >
         <div class="col-4">
             <img :src="product.image" class="w-100" />
@@ -16,8 +17,13 @@
 </template>
 
 <script>
+
+import Header from "../layout/Header";
 export default {
     props: ["id"],
+    components: {
+        Header
+    },
     mounted() {
         this.$store.dispatch('main/getProduct', this.id)
     },

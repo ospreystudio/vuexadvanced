@@ -7,6 +7,7 @@
 
 <script>
 
+
 import ProductCard from "./ProductCard";
 export default {
     components: {
