@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Cart;
+
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use Illuminate\Http\Request;
 
 class ProductsCartController extends Controller

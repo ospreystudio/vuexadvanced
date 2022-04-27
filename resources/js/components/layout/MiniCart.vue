@@ -14,7 +14,6 @@
                 <div>
                     <a
                         href="#"
-                        class="badge badge-secondary"
                         @click.prevent=""
                     >remove</a>
                 </div>
@@ -23,7 +22,7 @@
         </div>
 
         <div class="d-flex justify-content-between">
-            <span>Total: </span>
+            <span>Total: ${{ cartPrice }} </span>
             <a href="#" @click.prevent="">Clear Cart</a>
         </div>
     </div>
@@ -31,12 +30,24 @@
 
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
     name: "MiniCart.vue",
+    mounted() {
+      this.getCartItems()
+    },
     computed: {
         carts() {
             return this.$store.state.cart.cart
-        }
+        },
+        ...mapGetters({
+            cartPrice: 'cart/cartPrice'
+        })
+    },
+    methods: {
+        ...mapActions("cart", [
+            'getCartItems'
+        ])
     }
 }
 </script>

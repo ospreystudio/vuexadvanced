@@ -16,7 +16,7 @@
                             data-toggle="dropdown"
                             aria-haspopup="true"
                             aria-expanded="false"
-                        >Cart</button>
+                        >{{ cartItem }} Cart</button>
                         <div>
                             <mini-cart />
                         </div>
@@ -29,9 +29,15 @@
 
 <script>
 
+import { mapGetters } from 'vuex'
 import MiniCart from "./MiniCart";
 export default {
     components: { MiniCart },
+    computed: {
+        ...mapGetters({
+            cartItem: 'cart/cartItemCount'
+        })
+    }
 };
 </script>
 
