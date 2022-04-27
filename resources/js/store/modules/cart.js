@@ -23,6 +23,15 @@ const actions = {
                     console.log(error.response)
                 }
         })
+    },
+    removeProduct({commit}, product) {
+        commit ('remove_product', product)
+
+        axios.delete(`http://127.0.0.1:8000/api/cart/${product.id}`)
+    },
+    clearCart({commit}) {
+        commit('clear_cart')
+        axios.delete('http://127.0.0.1:8000/api/cart')
     }
 }
 
@@ -43,6 +52,14 @@ const mutations = {
     },
     set_cart(state, cartItems) {
         state.cart = cartItems
+    },
+    remove_product(state, product) {
+      state.cart = state.cart.filter(item => {
+          return item.product.id !== product.id
+      })
+    },
+    clear_cart(state) {
+        state.cart = []
     }
 }
 

@@ -9,15 +9,12 @@
             <h3>{{ product.price }}</h3>
 
             <input type="text"  class="text-center col-1 mr-2 p-1" />
-            <button class="btn btn-primary" @click="addProductToCart">Add to Cart</button>
-
+            <button class="btn btn-primary" @click="addToCard">Add to Cart</button>
             <p class="mt-4"> {{ product.description }} </p>
         </div>
     </div>
 </template>
-
-<script>
-
+y<script>
 import Header from "../layout/Header";
 export default {
     props: ["id"],
@@ -33,15 +30,14 @@ export default {
         }
     },
     methods: {
-        addProductToCart() {
+        addToCard() {
             this.$store.dispatch('cart/addProductCart', {
                 product: this.product,
                 quantity: 1
             })
         }
     }
-
-};
+}
 </script>
 
 <style>

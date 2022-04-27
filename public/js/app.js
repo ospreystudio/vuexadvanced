@@ -22971,7 +22971,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   }, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)({
     cartPrice: 'cart/cartPrice'
   })),
-  methods: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)("cart", ['getCartItems']))
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)("cart", ['getCartItems'])), {}, {
+    removeProduct: function removeProduct(product) {
+      this.$store.dispatch('cart/removeProduct', product);
+    },
+    clearCart: function clearCart() {
+      this.$store.dispatch('cart/clearCart');
+    }
+  })
 });
 
 /***/ }),
@@ -23090,7 +23097,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   methods: {
-    addProductToCart: function addProductToCart() {
+    addToCard: function addToCard() {
       this.$store.dispatch('cart/addProductCart', {
         product: this.product,
         quantity: 1
@@ -23196,11 +23203,13 @@ var _hoisted_3 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementV
 /* HOISTED */
 );
 
-var _hoisted_4 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1
+var _hoisted_4 = ["onClick"];
+
+var _hoisted_5 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("hr", null, null, -1
 /* HOISTED */
 );
 
-var _hoisted_5 = {
+var _hoisted_6 = {
   "class": "d-flex justify-content-between"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -23213,15 +23222,21 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     /* TEXT */
     )]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
       href: "#",
-      onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {}, ["prevent"]))
-    }, "remove")])]), _hoisted_4]);
+      onClick: (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function ($event) {
+        return $options.removeProduct(item.product);
+      }, ["prevent"])
+    }, "remove", 8
+    /* PROPS */
+    , _hoisted_4)])]), _hoisted_5]);
   }), 128
   /* KEYED_FRAGMENT */
-  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "Total: $" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.cartPrice), 1
+  )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_6, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, "Total: $" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.cartPrice), 1
   /* TEXT */
   ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
     href: "#",
-    onClick: _cache[1] || (_cache[1] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {}, ["prevent"]))
+    onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+      return $options.clearCart && $options.clearCart.apply($options, arguments);
+    }, ["prevent"]))
   }, "Clear Cart")])]);
 }
 
@@ -23410,7 +23425,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   ), _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
     "class": "btn btn-primary",
     onClick: _cache[0] || (_cache[0] = function () {
-      return $options.addProductToCart && $options.addProductToCart.apply($options, arguments);
+      return $options.addToCard && $options.addToCard.apply($options, arguments);
     })
   }, "Add to Cart"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_6, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.product.description), 1
   /* TEXT */
@@ -23604,12 +23619,22 @@ var actions = {
         console.log(error.response);
       }
     });
+  },
+  removeProduct: function removeProduct(_ref4, product) {
+    var commit = _ref4.commit;
+    commit('remove_product', product);
+    axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"]("http://127.0.0.1:8000/api/cart/".concat(product.id));
+  },
+  clearCart: function clearCart(_ref5) {
+    var commit = _ref5.commit;
+    commit('clear_cart');
+    axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"]('http://127.0.0.1:8000/api/cart');
   }
 };
 var mutations = {
-  add_to_cart: function add_to_cart(state, _ref4) {
-    var product = _ref4.product,
-        quantity = _ref4.quantity;
+  add_to_cart: function add_to_cart(state, _ref6) {
+    var product = _ref6.product,
+        quantity = _ref6.quantity;
     var productCart = state.cart.find(function (item) {
       return item.product.id === product.id;
     });
@@ -23626,6 +23651,14 @@ var mutations = {
   },
   set_cart: function set_cart(state, cartItems) {
     state.cart = cartItems;
+  },
+  remove_product: function remove_product(state, product) {
+    state.cart = state.cart.filter(function (item) {
+      return item.product.id !== product.id;
+    });
+  },
+  clear_cart: function clear_cart(state) {
+    state.cart = [];
   }
 };
 var getters = {
@@ -23666,21 +23699,20 @@ __webpack_require__.r(__webpack_exports__);
 
 var state = {
   products: [],
-  product: null
+  product: null,
+  cart: []
 };
 var actions = {
   getProducts: function getProducts(_ref) {
     var commit = _ref.commit;
-    axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/api/products').then(function (resource) {
-      console.log(resource.data);
-      commit('set_products', resource.data);
+    axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/api/products').then(function (response) {
+      commit('set_products', response.data);
     });
   },
   getProduct: function getProduct(_ref2, productId) {
     var commit = _ref2.commit;
-    axios__WEBPACK_IMPORTED_MODULE_0___default().get("http://127.0.0.1:8000/api/products/".concat(productId)).then(function (resource) {
-      console.log(resource.data);
-      commit('set_product', resource.data);
+    axios__WEBPACK_IMPORTED_MODULE_0___default().get("http://127.0.0.1:8000/api/products/".concat(productId)).then(function (response) {
+      commit('set_product', response.data);
     });
   }
 };

@@ -2,24 +2,23 @@ import axios from "axios";
 
 const state = {
     products: [],
-    product: null
+    product: null,
+    cart: [],
 }
 
 const actions = {
     getProducts({commit}) {
         axios.get('http://127.0.0.1:8000/api/products')
-            .then(resource => {
-                console.log(resource.data)
-                commit('set_products', resource.data)
+            .then(response => {
+                commit('set_products', response.data)
             })
     },
     getProduct({commit}, productId) {
         axios.get(`http://127.0.0.1:8000/api/products/${productId}`)
-            .then(resource => {
-                console.log(resource.data)
-                commit('set_product', resource.data)
+            .then(response => {
+                commit('set_product', response.data)
             })
-    }
+    },
 }
 
 const mutations = {
@@ -28,7 +27,7 @@ const mutations = {
     },
     set_product(state, product) {
         state.product = product
-    }
+    },
 }
 
 

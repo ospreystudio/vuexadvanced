@@ -14,7 +14,7 @@
                 <div>
                     <a
                         href="#"
-                        @click.prevent=""
+                        @click.prevent="removeProduct(item.product)"
                     >remove</a>
                 </div>
             </div>
@@ -23,7 +23,7 @@
 
         <div class="d-flex justify-content-between">
             <span>Total: ${{ cartPrice }} </span>
-            <a href="#" @click.prevent="">Clear Cart</a>
+            <a href="#" @click.prevent="clearCart">Clear Cart</a>
         </div>
     </div>
 </template>
@@ -47,8 +47,16 @@ export default {
     methods: {
         ...mapActions("cart", [
             'getCartItems'
-        ])
-    }
+        ]),
+        removeProduct(product) {
+            this.$store.dispatch('cart/removeProduct', product)
+        },
+        clearCart() {
+            this.$store.dispatch('cart/clearCart')
+        }
+    },
+
+
 }
 </script>
 
