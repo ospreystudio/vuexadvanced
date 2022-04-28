@@ -23436,6 +23436,83 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
 /***/ }),
 
+/***/ "./resources/js/apis/Api.js":
+/*!**********************************!*\
+  !*** ./resources/js/apis/Api.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var Api = axios__WEBPACK_IMPORTED_MODULE_0___default().create({
+  baseURL: 'http://127.0.0.1:8000/api'
+});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Api);
+
+/***/ }),
+
+/***/ "./resources/js/apis/Cart.js":
+/*!***********************************!*\
+  !*** ./resources/js/apis/Cart.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Api */ "./resources/js/apis/Api.js");
+
+var end_point = 'cart';
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  all: function all() {
+    return _Api__WEBPACK_IMPORTED_MODULE_0__["default"].get(end_point);
+  },
+  store: function store(data) {
+    return _Api__WEBPACK_IMPORTED_MODULE_0__["default"].post(end_point, data);
+  },
+  "delete": function _delete(id) {
+    return _Api__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]("".concat(end_point, "/").concat(id));
+  },
+  deleteAll: function deleteAll() {
+    return _Api__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"](end_point);
+  }
+});
+
+/***/ }),
+
+/***/ "./resources/js/apis/Product.js":
+/*!**************************************!*\
+  !*** ./resources/js/apis/Product.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Api */ "./resources/js/apis/Api.js");
+
+var end_point = 'products';
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  all: function all() {
+    return _Api__WEBPACK_IMPORTED_MODULE_0__["default"].get(end_point);
+  },
+  show: function show(id) {
+    return _Api__WEBPACK_IMPORTED_MODULE_0__["default"].get("".concat(end_point, "/").concat(id));
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -23590,8 +23667,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _apis_Cart__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../apis/Cart */ "./resources/js/apis/Cart.js");
 
 var state = {
   cart: []
@@ -23605,14 +23681,14 @@ var actions = {
       product: product,
       quantity: quantity
     });
-    axios__WEBPACK_IMPORTED_MODULE_0___default().post('http://127.0.0.1:8000/api/cart', {
+    _apis_Cart__WEBPACK_IMPORTED_MODULE_0__["default"].store({
       product_id: product.id,
       quantity: quantity
     });
   },
   getCartItems: function getCartItems(_ref3) {
     var commit = _ref3.commit;
-    axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/api/cart').then(function (response) {
+    _apis_Cart__WEBPACK_IMPORTED_MODULE_0__["default"].all().then(function (response) {
       commit('set_cart', response.data);
     })["catch"](function (error) {
       if (error.resource) {
@@ -23623,12 +23699,12 @@ var actions = {
   removeProduct: function removeProduct(_ref4, product) {
     var commit = _ref4.commit;
     commit('remove_product', product);
-    axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"]("http://127.0.0.1:8000/api/cart/".concat(product.id));
+    _apis_Cart__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"](product.id);
   },
   clearCart: function clearCart(_ref5) {
     var commit = _ref5.commit;
     commit('clear_cart');
-    axios__WEBPACK_IMPORTED_MODULE_0___default()["delete"]('http://127.0.0.1:8000/api/cart');
+    _apis_Cart__WEBPACK_IMPORTED_MODULE_0__["default"].deleteAll();
   }
 };
 var mutations = {
@@ -23694,8 +23770,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _apis_Product__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../apis/Product */ "./resources/js/apis/Product.js");
 
 var state = {
   products: [],
@@ -23705,13 +23780,13 @@ var state = {
 var actions = {
   getProducts: function getProducts(_ref) {
     var commit = _ref.commit;
-    axios__WEBPACK_IMPORTED_MODULE_0___default().get('http://127.0.0.1:8000/api/products').then(function (response) {
+    _apis_Product__WEBPACK_IMPORTED_MODULE_0__["default"].all().then(function (response) {
       commit('set_products', response.data);
     });
   },
   getProduct: function getProduct(_ref2, productId) {
     var commit = _ref2.commit;
-    axios__WEBPACK_IMPORTED_MODULE_0___default().get("http://127.0.0.1:8000/api/products/".concat(productId)).then(function (response) {
+    _apis_Product__WEBPACK_IMPORTED_MODULE_0__["default"].show(productId).then(function (response) {
       commit('set_product', response.data);
     });
   }

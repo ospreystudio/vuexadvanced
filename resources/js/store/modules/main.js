@@ -1,4 +1,4 @@
-import axios from "axios";
+import Product from '../../apis/Product'
 
 const state = {
     products: [],
@@ -8,13 +8,14 @@ const state = {
 
 const actions = {
     getProducts({commit}) {
-        axios.get('http://127.0.0.1:8000/api/products')
+        Product.all()
             .then(response => {
                 commit('set_products', response.data)
             })
     },
+
     getProduct({commit}, productId) {
-        axios.get(`http://127.0.0.1:8000/api/products/${productId}`)
+        Product.show(productId)
             .then(response => {
                 commit('set_product', response.data)
             })

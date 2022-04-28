@@ -1,4 +1,4 @@
-import axios from "axios";
+import Cart from '../../apis/Cart'
 
 const state = {
     cart: []
@@ -8,14 +8,14 @@ const actions = {
     addProductCart({commit}, {product, quantity}) {
         commit('add_to_cart', {product, quantity})
 
-        axios.post('http://127.0.0.1:8000/api/cart', {
+        Cart.store( {
             product_id: product.id,
             quantity
         })
     },
 
     getCartItems({commit}) {
-        axios.get('http://127.0.0.1:8000/api/cart')
+        Cart.all()
             .then(response => {
                 commit('set_cart', response.data)
             }) . catch ((error) => {
@@ -27,11 +27,11 @@ const actions = {
     removeProduct({commit}, product) {
         commit ('remove_product', product)
 
-        axios.delete(`http://127.0.0.1:8000/api/cart/${product.id}`)
+        Cart.delete(product.id);
     },
     clearCart({commit}) {
         commit('clear_cart')
-        axios.delete('http://127.0.0.1:8000/api/cart')
+        Cart.deleteAll();
     }
 }
 
