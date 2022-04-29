@@ -1,12 +1,17 @@
 import Cart from '../../apis/Cart'
-
+import Notifications from "../modules/notifications"
 const state = {
     cart: []
 }
 
 const actions = {
-    addProductCart({commit}, {product, quantity}) {
-        commit('add_to_cart', {product, quantity})
+    addProductCart ({commit, dispatch},  {product, quantity}) {
+        commit('add_to_cart',  {product, quantity});
+
+        dispatch('notifications/addNotification', {
+            type: 'success',
+            message: 'Product added to cart.'
+        }, { root: true });
 
         Cart.store( {
             product_id: product.id,
